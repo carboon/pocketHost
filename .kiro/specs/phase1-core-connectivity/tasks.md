@@ -6,30 +6,30 @@
 
 ## Tasks
 
-- [ ] 1. 项目初始化与基础架构搭建
-  - [ ] 1.1 创建 Godot 4.3 项目结构
+- [x] 1. 项目初始化与基础架构搭建
+  - [x] 1.1 创建 Godot 4.3 项目结构
     - 创建目录结构：`resources/`, `managers/`, `utils/`, `ui/`, `tests/`, `ios_plugin/`
     - 配置项目设置（窗口大小、渲染模式等）
     - _Requirements: 11.1_
-  - [ ] 1.2 配置 GUT 测试框架
+  - [x] 1.2 配置 GUT 测试框架
     - 安装 GUT 插件
     - 创建测试运行配置
     - 创建 `tests/generators.gd` 测试数据生成器
     - _Requirements: Testing Strategy_
-  - [ ] 1.3 创建错误类型定义
+  - [x] 1.3 创建错误类型定义
     - 实现 `utils/error_types.gd` 错误码枚举和工厂方法
     - _Requirements: Error Handling_
 
-- [ ] 2. Resource 数据容器实现
-  - [ ] 2.1 实现 HotspotInfoResource
+- [x] 2. Resource 数据容器实现
+  - [x] 2.1 实现 HotspotInfoResource
     - 创建 `resources/hotspot_info_resource.gd`
     - 实现 `set_info()`, `clear()`, `to_wfa_string()` 方法
     - 实现 `info_updated` Signal
     - _Requirements: 1.3, 1.4, 2.1_
-  - [ ]* 2.2 编写 HotspotInfoResource 属性测试
+  - [x] 2.2 编写 HotspotInfoResource 属性测试
     - **Property 1: HotspotInfoResource 数据完整性**
     - **Validates: Requirements 1.3, 1.4**
-  - [ ] 2.3 实现 ConnectionStateResource
+  - [x] 2.3 实现 ConnectionStateResource
     - 创建 `resources/connection_state_resource.gd`
     - 实现状态枚举和 `transition_to()`, `reset()` 方法
     - 实现 `state_changed` Signal
@@ -37,22 +37,22 @@
   - [ ]* 2.4 编写 ConnectionStateResource 属性测试
     - **Property 4: 连接状态同步**
     - **Validates: Requirements 9.1, 10.3**
-  - [ ] 2.5 实现 MessageResource
+  - [x] 2.5 实现 MessageResource
     - 创建 `resources/message_resource.gd`
     - 实现消息数据结构
     - _Requirements: 8.1, 8.2_
 
-- [ ] 3. Checkpoint - 数据层验证
+- [x] 3. Checkpoint - 数据层验证
   - 确保所有 Resource 类测试通过
   - 确保 Signal 正确发出
   - 如有问题请询问用户
 
-- [ ] 4. 二维码生成模块实现
-  - [ ] 4.1 集成 godot-qrcode 插件
+- [x] 4. 二维码生成模块实现
+  - [x] 4.1 集成 godot-qrcode 插件
     - 下载并配置 godot-qrcode 插件
     - 验证插件在 iOS 导出时可用
     - _Requirements: 2.2_
-  - [ ] 4.2 实现 QRCodeGenerator
+  - [x] 4.2 实现 QRCodeGenerator
     - 创建 `utils/qr_code_generator.gd`
     - 实现 `generate_wifi_qr()` 方法
     - 实现 `qr_generated` 和 `generation_failed` Signal
@@ -60,23 +60,23 @@
   - [ ]* 4.3 编写 WFA 格式属性测试
     - **Property 2: WFA 二维码格式生成与解析 (Round-Trip)**
     - **Validates: Requirements 2.1, 3.2**
-  - [ ] 4.4 实现 WFA 字符串解析器
+  - [x] 4.4 实现 WFA 字符串解析器
     - 创建 `utils/wfa_parser.gd`
     - 实现 `parse_wfa_string()` 方法用于解析二维码内容
     - _Requirements: 3.2_
 
-- [ ] 5. 状态机实现
-  - [ ] 5.1 实现 ConnectionStateMachine
+- [-] 5. 状态机实现
+  - [x] 5.1 实现 ConnectionStateMachine
     - 创建 `managers/connection_state_machine.gd`
     - 实现状态转换映射 `ALLOWED_TRANSITIONS`
     - 实现 `can_transition_to()`, `request_transition()`, `is_operation_allowed()` 方法
     - 实现 `state_transition_completed` 和 `operation_blocked` Signal
     - _Requirements: 14.1, 14.2, 14.4, 14.5_
-  - [ ]* 5.2 编写状态机属性测试
+  - [x] 5.2 编写状态机属性测试
     - **Property 6: 状态机转换有效性**
     - **Validates: Requirements 14.2, 14.4, 14.5**
 
-- [ ] 6. Checkpoint - 核心逻辑验证
+- [x] 6. Checkpoint - 核心逻辑验证
   - 确保二维码生成和解析测试通过
   - 确保状态机转换测试通过
   - 如有问题请询问用户
