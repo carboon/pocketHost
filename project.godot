@@ -12,8 +12,8 @@ config_version=5
 
 config/name="Pocket Host"
 config/description="移动端点对点游戏平台 - Phase 1 核心连接功能"
-run/main_scene="res://ui/main_menu.tscn"
-config/features=PackedStringArray("4.3", "Mobile")
+# run/main_scene="res://ui/main_menu.tscn"
+config/features=PackedStringArray("4.5", "Mobile")
 config/icon="res://icon.svg"
 
 [display]

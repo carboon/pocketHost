@@ -4,15 +4,18 @@
 
 extends GutTest
 
+# 预加载必要的类
+const ConnectionStateResource = preload("res://resources/connection_state_resource.gd")
+const StateMachineScript = preload("res://managers/connection_state_machine.gd")
+
 var state_machine
 var state_resource
 var ConnectionState  # 枚举引用
 
 
 func before_each():
-	state_resource = load("res://resources/connection_state_resource.gd").new()
-	ConnectionState = load("res://resources/connection_state_resource.gd").ConnectionState
-	var StateMachineScript = load("res://managers/connection_state_machine.gd")
+	state_resource = ConnectionStateResource.new()
+	ConnectionState = ConnectionStateResource.ConnectionState
 	state_machine = Node.new()
 	state_machine.set_script(StateMachineScript)
 	add_child(state_machine)

@@ -39,7 +39,8 @@ signal state_changed(old_state: ConnectionState, new_state: ConnectionState)
 @export var error_message: String = ""
 
 # 已连接的 Peer ID 列表（Host 使用）
-@export var connected_peers: Array[int] = []
+# 使用普通 Array 而不是 Array[int] 来避免 Godot 4.5.1 的类型系统问题
+@export var connected_peers: Array = []
 
 
 # 转换到新状态
@@ -58,5 +59,6 @@ func reset() -> void:
 	peer_id = 0
 	gateway_ip = ""
 	error_message = ""
-	connected_peers.clear()
+	# 确保 connected_peers 始终是有效的空数组
+	connected_peers = []
 	state_changed.emit(old_state, ConnectionState.IDLE)

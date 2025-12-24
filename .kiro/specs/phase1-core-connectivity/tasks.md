@@ -34,7 +34,7 @@
     - 实现状态枚举和 `transition_to()`, `reset()` 方法
     - 实现 `state_changed` Signal
     - _Requirements: 9.1, 10.3_
-  - [ ]* 2.4 编写 ConnectionStateResource 属性测试
+  - [x] 2.4 编写 ConnectionStateResource 属性测试
     - **Property 4: 连接状态同步**
     - **Validates: Requirements 9.1, 10.3**
   - [x] 2.5 实现 MessageResource
@@ -57,7 +57,7 @@
     - 实现 `generate_wifi_qr()` 方法
     - 实现 `qr_generated` 和 `generation_failed` Signal
     - _Requirements: 2.1, 2.2_
-  - [ ]* 4.3 编写 WFA 格式属性测试
+  - [x] 4.3 编写 WFA 格式属性测试
     - **Property 2: WFA 二维码格式生成与解析 (Round-Trip)**
     - **Validates: Requirements 2.1, 3.2**
   - [x] 4.4 实现 WFA 字符串解析器
@@ -81,25 +81,25 @@
   - 确保状态机转换测试通过
   - 如有问题请询问用户
 
-- [ ] 7. ENet 网络层实现
-  - [ ] 7.1 实现 ConnectionManager 基础功能
+- [x] 7. ENet 网络层实现
+  - [x] 7.1 实现 ConnectionManager 基础功能
     - 创建 `managers/connection_manager.gd`
     - 实现 `start_server()`, `connect_to_host()`, `disconnect_all()` 方法
     - 连接 Godot multiplayer 信号
     - _Requirements: 6.1, 6.2, 7.1, 7.2, 7.3_
-  - [ ] 7.2 实现心跳机制
+  - [x] 7.2 实现心跳机制
     - 添加心跳 Timer 和超时检测
     - 实现 `_send_heartbeat()` 和 `_receive_heartbeat()` RPC
     - 实现 `heartbeat_timeout` Signal
     - _Requirements: 13.1, 13.2, 13.3_
-  - [ ]* 7.3 编写心跳机制属性测试
+  - [x]* 7.3 编写心跳机制属性测试
     - **Property 5: 心跳机制正确性**
     - **Validates: Requirements 13.1, 13.2, 13.3**
-  - [ ] 7.4 实现 Peer 连接追踪
+  - [x] 7.4 实现 Peer 连接追踪
     - 实现 `connected_peers` 数组管理
     - 实现 `client_connected` 和 `client_disconnected` Signal
     - _Requirements: 6.4, 6.5_
-  - [ ]* 7.5 编写 Peer 连接追踪属性测试
+  - [x]* 7.5 编写 Peer 连接追踪属性测试
     - **Property 7: Peer 连接追踪**
     - **Validates: Requirements 6.5**
 

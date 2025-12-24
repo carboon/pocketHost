@@ -1,0 +1,84 @@
+# ===========================================
+# Godot 项目 .gitignore
+# ===========================================
+
+# Godot 编辑器生成的临时文件
+.godot/
+
+# 导出文件
+*.pck
+*.zip
+export_presets.cfg
+
+# ===========================================
+# Kiro 临时文件
+# ===========================================
+.kiro_workspace/
+
+# ===========================================
+# 临时文件和日志
+# ===========================================
+*.txt
+*.log
+*.tmp
+*.temp
+*.bak
+*.swp
+*~
+
+# ===========================================
+# 编译和构建产物
+# ===========================================
+
+# iOS 构建
+ios_plugin/build/
+ios_plugin/*.xcworkspace
+ios_plugin/*.xcodeproj/xcuserdata/
+ios_plugin/*.xcodeproj/project.xcworkspace/
+ios_plugin/Pods/
+ios_plugin/Podfile.lock
+*.ipa
+*.dSYM.zip
+*.dSYM
+
+# Android 构建
+android_plugin/build/
+android_plugin/.gradle/
+android_plugin/local.properties
+*.apk
+*.aab
+
+# ===========================================
+# 系统文件
+# ===========================================
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Linux
+*~
+
+# ===========================================
+# IDE 和编辑器
+# ===========================================
+.idea/
+.vscode/
+*.sublime-project
+*.sublime-workspace
+
+# ===========================================
+# 保留的文件（不忽略）
+# ===========================================
+# 源码: *.gd, *.tscn, *.tres, *.gdshader
+# 测试: tests/*.gd
+# 配置: project.godot, .gutconfig.json
+# 资源: *.svg, *.png, *.jpg, *.wav, *.ogg
+# Kiro specs: .kiro/specs/, .kiro/steering/, .kiro/settings/
