@@ -18,11 +18,5 @@ inclusion: always
 ## 测试框架
 - **单元测试**：GUT (Godot Unit Test)
 - **属性测试**：100 次迭代
-- **测试命令**：`godot --path . -s addons/gut/gut_cmdln.gd -gtest={test_name} 2>&1`
-
-## 关键依赖
-- godot-qrcode：二维码生成
-- GUT：测试框架
-
-## 开发哲学
-**混合权威**：Host 计算核心逻辑，Client 负责预测与插值渲染
+- **测试命令**：`godot --path . -s addons/gut/gut_cmdln.gd -gtest=res://tests/{test_name}.gd 2>&1`
+- **注意**：必须使用完整路径 `res://tests/{test_name}.gd` 格式，否则 GUT 会报 "Could not find script" 错误

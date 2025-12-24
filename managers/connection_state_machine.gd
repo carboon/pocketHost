@@ -27,9 +27,9 @@ var _connection_manager: Node
 var _ios_plugin: Object
 
 # 允许的状态转换映射表
-# 键：当前状态，值：允许转换到的目标状态列表
-# 使用整数值而不是枚举引用，以避免常量表达式问题
-var _allowed_transitions: Dictionary = {}
+# 键：当前状态（int），值：允许转换到的目标状态列表（Array[int]）
+# 使用 Godot 4.5.1 强类型字典增强类型安全性
+var _allowed_transitions: Dictionary[int, Array] = {}
 
 
 func _ready() -> void:

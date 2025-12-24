@@ -26,6 +26,11 @@ window/stretch/mode="canvas_items"
 window/stretch/aspect="expand"
 window/handheld/orientation=1
 
+[display.ios]
+
+# 支持 iPad 多方向
+window/handheld/orientation=0
+
 [rendering]
 
 renderer/rendering_method="mobile"

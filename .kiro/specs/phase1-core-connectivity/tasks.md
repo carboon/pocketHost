@@ -7,7 +7,7 @@
 ## Tasks
 
 - [x] 1. 项目初始化与基础架构搭建
-  - [x] 1.1 创建 Godot 4.3 项目结构
+  - [x] 1.1 创建 Godot 4.5.1 项目结构
     - 创建目录结构：`resources/`, `managers/`, `utils/`, `ui/`, `tests/`, `ios_plugin/`
     - 配置项目设置（窗口大小、渲染模式等）
     - _Requirements: 11.1_
@@ -92,19 +92,19 @@
     - 实现 `_send_heartbeat()` 和 `_receive_heartbeat()` RPC
     - 实现 `heartbeat_timeout` Signal
     - _Requirements: 13.1, 13.2, 13.3_
-  - [x]* 7.3 编写心跳机制属性测试
+  - [x] 7.3 编写心跳机制属性测试
     - **Property 5: 心跳机制正确性**
     - **Validates: Requirements 13.1, 13.2, 13.3**
   - [x] 7.4 实现 Peer 连接追踪
     - 实现 `connected_peers` 数组管理
     - 实现 `client_connected` 和 `client_disconnected` Signal
     - _Requirements: 6.4, 6.5_
-  - [x]* 7.5 编写 Peer 连接追踪属性测试
+  - [x] 7.5 编写 Peer 连接追踪属性测试
     - **Property 7: Peer 连接追踪**
     - **Validates: Requirements 6.5**
 
-- [ ] 8. 消息处理模块实现
-  - [ ] 8.1 实现 MessageHandler
+- [x] 8. 消息处理模块实现
+  - [x] 8.1 实现 MessageHandler
     - 创建 `managers/message_handler.gd`
     - 实现 `send_message()` 方法和 `_receive_message()` RPC
     - 实现 `message_received`, `message_sent`, `send_failed` Signal
@@ -113,48 +113,48 @@
     - **Property 3: 消息收发 Round-Trip**
     - **Validates: Requirements 8.1, 8.2**
 
-- [ ] 9. Checkpoint - 网络层验证
+- [x] 9. Checkpoint - 网络层验证
   - 确保 ENet 服务器创建和连接测试通过
   - 确保心跳和消息测试通过
   - 如有问题请询问用户
 
-- [ ] 10. iOS 原生插件开发
-  - [ ] 10.1 创建 iOS Plugin 项目结构
+- [x] 10. iOS 原生插件开发
+  - [x] 10.1 创建 iOS Plugin 项目结构
     - 基于 godot-ios-plugin 模板创建项目
     - 配置 Xcode 项目和构建脚本
     - _Requirements: 11.4_
-  - [ ] 10.2 实现二维码扫描功能
+  - [x] 10.2 实现二维码扫描功能
     - 使用 VisionKit DataScannerViewController 实现扫描
     - 实现 WFA 格式解析
     - 实现 `qr_code_scanned`, `qr_scan_cancelled`, `qr_scan_failed` Signal
     - _Requirements: 3.1, 3.2, 3.3, 3.4, 3.5_
-  - [ ] 10.3 实现 Wi-Fi 连接功能
+  - [x] 10.3 实现 Wi-Fi 连接功能
     - 使用 NEHotspotConfiguration API 实现连接
     - 处理 "Already Associated" 错误码
     - 实现 `wifi_connected`, `wifi_connection_failed` Signal
     - _Requirements: 4.1, 4.2, 4.3, 4.4, 4.5_
-  - [ ] 10.4 实现网关 IP 发现功能
+  - [x] 10.4 实现网关 IP 发现功能
     - 使用 getifaddrs 和路由表查询实现
     - 优先选择 en0 (Wi-Fi) 接口
     - 实现 `gateway_discovered`, `gateway_discovery_failed` Signal
     - _Requirements: 5.1, 5.2, 5.3, 5.4, 5.5_
-  - [ ] 10.5 实现 Wi-Fi 配置移除功能
+  - [x] 10.5 实现 Wi-Fi 配置移除功能
     - 使用 NEHotspotConfigurationManager.removeConfiguration
     - 实现 `wifi_removed` Signal
     - _Requirements: 10.2_
-  - [ ] 10.6 配置 Info.plist 权限声明
+  - [x] 10.6 配置 Info.plist 权限声明
     - 添加 NSLocalNetworkUsageDescription
     - 添加 NSCameraUsageDescription
     - 添加 NSBonjourServices
     - _Requirements: 12.1, 12.2, 12.3_
 
-- [ ] 11. Godot 与 iOS Plugin 桥接
-  - [ ] 11.1 创建 iOSPluginBridge 单例
+- [x] 11. Godot 与 iOS Plugin 桥接
+  - [x] 11.1 创建 iOSPluginBridge 单例
     - 创建 `managers/ios_plugin_bridge.gd`
     - 实现插件加载和信号转发
     - 处理插件不可用时的降级逻辑（编辑器模式）
     - _Requirements: 11.4_
-  - [ ] 11.2 实现 Client 连接流程编排
+  - [x] 11.2 实现 Client 连接流程编排
     - 创建 `managers/client_flow_controller.gd`
     - 编排：扫码 → 连接 Wi-Fi → 发现网关 → ENet 连接
     - 处理各阶段错误和超时

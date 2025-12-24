@@ -1,0 +1,40 @@
+[gd_scene load_steps=2 format=3 uid="uid://b8j7xqr4qvn2w"]
+
+[ext_resource type="Script" path="res://test_ios_plugin.gd" id="1_0x8qr"]
+
+[node name="TestiOSPlugin" type="Node"]
+script = ExtResource("1_0x8qr")
+
+[node name="UI" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UI"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 50.0
+offset_top = 100.0
+offset_right = -50.0
+offset_bottom = -100.0
+
+[node name="Title" type="Label" parent="UI/VBoxContainer"]
+layout_mode = 2
+text = "iOS Plugin 真机测试"
+horizontal_alignment = 1
+
+[node name="Instructions" type="Label" parent="UI/VBoxContainer"]
+layout_mode = 2
+text = "点击屏幕上方: 开始二维码扫描
+点击屏幕下方: 测试网关发现
+
+查看控制台输出获取详细结果"
+horizontal_alignment = 1
+
+[node name="Status" type="Label" parent="UI/VBoxContainer"]
+layout_mode = 2
+text = "等待测试开始..."
+horizontal_alignment = 1
