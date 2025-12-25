@@ -4,9 +4,8 @@
 
 Pocket Host 是一个移动端点对点游戏平台，允许设备在无路由器、无互联网的环境下建立局域网连接进行多人游戏。Phase 1 的目标是验证核心连接功能，**优先支持 iOS 设备作为 Host（主机）**。
 
-由于 iOS 系统限制，App 无法读取个人热点的密码，因此 iOS Host 的流程为：用户手动开启个人热点 → 在 App 内输入自己设置的密码 → App 生成二维码供 Client 扫描。Client 连接后通过"网关反向推导"发现 Host IP，建立 UDP 通信。
-
-本阶段采用 Godot 4.3 引擎，使用 GDScript 编写业务逻辑，通过原生插件（Swift）实现 iOS 平台特定功能。架构设计遵循解耦原则：使用 Resource 类作为数据容器，使用 Signal 实现组件间通信，避免节点间的深度耦合。
+由于 iOS 系统限制，App 无法读取个人热点的密码，因此 iOS Host 的流程为：用户手动开启个人热点 → 在 App 内输入自己设置的密码 → App 生成二维码供 Client 扫描。Client 连接后通过"网关反向推导"发现 Host IP，建立 UDP
+“项目环境已升级至 Godot 4.5.1 Stable。在编写 GDScript 时，优先使用 4.4+ 引入的 Typed Dictionaries 和 UID 资源引用。针对 iOS 原生插件，请确保使用的导出模板版本匹配 4.5.1 的 API。”
 
 ## Glossary
 

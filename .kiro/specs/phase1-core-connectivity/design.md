@@ -2,7 +2,7 @@
 
 ## Overview
 
-本设计文档描述 Pocket Host Phase 1 核心连接功能的技术实现方案。系统采用 Godot 4.3 引擎，以 iOS 设备为主要开发目标，实现两台 iOS 设备之间的点对点局域网连接。
+本设计文档描述 Pocket Host Phase 1 核心连接功能的技术实现方案。系统采用 Godot 4.5.1 引擎，以 iOS 设备为主要开发目标，实现两台 iOS 设备之间的点对点局域网连接。
 
 ### 核心设计原则
 
@@ -13,7 +13,7 @@
 
 ### 技术栈
 
-- **引擎**: Godot 4.3 (Standard Build)
+- **引擎**: Godot 4.5.1 (Standard Build)
 - **脚本语言**: GDScript
 - **原生插件**: Swift (iOS Plugin)
 - **网络协议**: ENet (Godot High-level Multiplayer)
