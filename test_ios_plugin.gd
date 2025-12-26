@@ -10,8 +10,8 @@ func _ready():
 	print("=== iOS Plugin 真机测试开始 ===")
 	
 	# 显示设备信息
-	print("设备类型: %s" % DeviceInfo.get_device_name())
-	print("是否为平板: %s" % DeviceInfo.is_tablet())
+	print("设备类型: %s" % OS.get_name())
+	print("设备模型: %s" % OS.get_model_name())
 	
 	# 加载 iOS 插件桥接
 	ios_bridge = preload("res://managers/ios_plugin_bridge.gd").new()

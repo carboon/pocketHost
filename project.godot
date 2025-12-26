@@ -12,9 +12,10 @@ config_version=5
 
 config/name="Pocket Host"
 config/description="移动端点对点游戏平台 - Phase 1 核心连接功能"
-# run/main_scene="res://ui/main_menu.tscn"
+run/main_scene="uid://b8j7xqr4qvn2w"
 config/features=PackedStringArray("4.5", "Mobile")
 config/icon="res://icon.svg"
+#run/main_scene="res://ui/main_menu.tscn"
 
 [display]
 
@@ -28,8 +29,11 @@ window/handheld/orientation=1
 
 [display.ios]
 
-# 支持 iPad 多方向
-window/handheld/orientation=0
+"#æ¯æiPadå¤æ¹åwindow/handheld/orientation"=0
+
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/gut/plugin.cfg", "res://addons/qr_code/plugin.cfg")
 
 [rendering]
 

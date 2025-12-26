@@ -1,0 +1,12 @@
+[config]
+name="PocketHostPlugin"
+binary="PocketHostPlugin.xcframework"
+
+[dependencies]
+linked=[]
+embedded=[]
+system=["VisionKit", "NetworkExtension"]
+
+[capabilities]
+access_network=true
+

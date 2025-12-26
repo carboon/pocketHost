@@ -1,6 +1,0 @@
-[plugin]
-name="PocketHostPlugin"
-description="iOS Native plugin for PocketHost features"
-author="Your Name"
-version="1.0"
-script="PocketHostPlugin.swift" # This is a conceptual entry; the actual Swift file is compiled separately

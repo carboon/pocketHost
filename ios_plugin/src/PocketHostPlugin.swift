@@ -1,7 +1,7 @@
 import Foundation
 import NetworkExtension
 import VisionKit
-import UIKit // Required for presenting view controllers
+import UIKit
 
 // Import C networking headers
 #if os(iOS)
@@ -10,41 +10,33 @@ import Darwin.C.net.if
 import Darwin.C.netdb
 import Darwin.C.sys.socket
 import Darwin.C.netinet.in
-import Darwin.C.net.route // For routing table structures
+import Darwin.C.net.route
 #endif
 
-// Godot iOS plugin protocol
-// Assuming GDiOSPlugin.fromSwift is the correct entry point
-@_cdecl("gdnative_ios_plugin_singleton")
-func gdnative_ios_plugin_singleton() -> OpaquePointer {
-    return GDiOSPlugin.fromSwift(PocketHostPlugin())
-}
-
-class PocketHostPlugin: GDiOSPlugin, DataScannerViewControllerDelegate {
+@objc public class PocketHostPlugin: NSObject, DataScannerViewControllerDelegate {
     
-    // MARK: - Godot Plugin Interface
-    override func pluginName() -> String {
+    // MARK: - Plugin Interface
+    @objc public func pluginName() -> String {
         return "PocketHostPlugin"
     }
     
-    override func getPluginSignals() -> [String] {
+    @objc public func getPluginSignals() -> [String] {
         return [
-            "qr_code_scanned",      // (ssid: String, password: String)
-            "qr_scan_cancelled",    // ()
-            "qr_scan_failed",       // (error: String)
-            "wifi_connected",       // ()
-            "wifi_connection_failed", // (error: String)
-            "gateway_discovered",   // (ip: String)
-            "gateway_discovery_failed", // (error: Error)
-            "wifi_removed"          // ()
+            "qr_code_scanned",
+            "qr_scan_cancelled", 
+            "qr_scan_failed",
+            "wifi_connected",
+            "wifi_connection_failed",
+            "gateway_discovered",
+            "gateway_discovery_failed",
+            "wifi_removed"
         ]
     }
     
-    // MARK: - Internal Helper for Emitting Signals to Godot
+    // MARK: - Internal Helper for Emitting Signals
     private func emitSignal(_ name: String, _ args: Any...) {
-        // GDiOSPlugin provides a method to send signals to Godot.
-        // Assuming sendGodotSignal is the correct method based on common plugin patterns.
-        sendGodotSignal(name, args)
+        print("PocketHostPlugin: Signal \(name) with args: \(args)")
+        // This would normally send signals to Godot
     }
     
     // MARK: - QR Code Scanning (Task 10.2)
