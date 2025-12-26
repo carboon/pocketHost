@@ -20,6 +20,9 @@ var _plugin_singleton = null
 var _is_plugin_available = false
 
 func _ready():
+	# 执行启动时配置检查
+	_perform_startup_config_check()
+	
 	if Engine.has_singleton(PLUGIN_NAME):
 		print("iOS Plugin Bridge: PocketHostPlugin found.")
 		_is_plugin_available = true
@@ -102,3 +105,30 @@ func _on_gateway_discovery_failed(error_message):
 
 func _on_wifi_removed():
 	emit_signal("wifi_removed")
+
+
+# 执行启动时配置检查
+func _perform_startup_config_check() -> void:
+	# 加载配置检查器
+	var StartupConfigChecker = preload("res://utils/startup_config_checker.gd")
+	
+	# 执行检查（只检查插件相关配置）
+	var ConfigValidator = preload("res://utils/config_validator.gd")
+	var report = ConfigValidator.ValidationReport.new()
+	ConfigValidator._validate_plugin_configuration(report)
+	
+	if report.has_errors():
+		push_error("iOSPluginBridge: 发现插件配置错误，请检查控制台输出")
+		# 输出插件特定的错误信息
+		var errors = report.issues.filter(func(issue): return issue.severity == ConfigValidator.ValidationResult.ERROR)
+		for issue in errors:
+			print("❌ %s" % issue.message)
+			if not issue.fix_suggestion.is_empty():
+				print("   修复: %s" % issue.fix_suggestion)
+	elif report.has_warnings():
+		push_warning("iOSPluginBridge: 发现插件配置警告")
+		var warnings = report.issues.filter(func(issue): return issue.severity == ConfigValidator.ValidationResult.WARNING)
+		for issue in warnings:
+			print("⚠️ %s" % issue.message)
+	else:
+		print("iOSPluginBridge: 插件配置检查通过")

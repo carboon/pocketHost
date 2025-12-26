@@ -17,6 +17,11 @@ config/features=PackedStringArray("4.5", "Mobile")
 config/icon="res://icon.svg"
 #run/main_scene="res://ui/main_menu.tscn"
 
+[autoload]
+
+ConnectionManager="*res://managers/connection_manager.gd"
+iOSPluginBridge="*res://managers/ios_plugin_bridge.gd"
+
 [display]
 
 window/size/viewport_width=1080

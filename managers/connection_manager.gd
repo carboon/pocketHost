@@ -3,7 +3,6 @@
 # 负责创建服务器、建立客户端连接、管理 Peer 连接状态
 # 实现心跳机制确保连接稳定性
 
-class_name ConnectionManager
 extends Node
 
 # 引用 ConnectionStateResource 类
@@ -55,22 +54,113 @@ var _heartbeat_timer: Timer
 # 上次收到心跳的时间
 var _last_heartbeat_time: float = 0.0
 
+# 初始化状态枚举
+enum InitializationState {
+	NOT_INITIALIZED,
+	INITIALIZING,
+	READY,
+	ERROR
+}
+
+# 当前初始化状态
+var _initialization_state: InitializationState = InitializationState.NOT_INITIALIZED
+
+# 测试模式标志，用于跳过自动初始化
+var _skip_auto_setup: bool = false
+
 
 func _ready() -> void:
+	# 如果是测试模式，跳过自动初始化
+	if _skip_auto_setup:
+		return
+	
+	# 执行启动时配置检查
+	_perform_startup_config_check()
+	
+	_initialization_state = InitializationState.INITIALIZING
+	
 	# 连接 Godot multiplayer 信号
 	multiplayer.peer_connected.connect(_on_peer_connected)
 	multiplayer.peer_disconnected.connect(_on_peer_disconnected)
 	multiplayer.connected_to_server.connect(_on_connected_to_server)
 	multiplayer.connection_failed.connect(_on_connection_failed)
 	
-	# 设置心跳定时器
-	_setup_heartbeat_timer()
+	# 延迟设置，确保节点已经在场景树中
+	call_deferred("_deferred_setup")
 
 
 # 初始化连接管理器
 # @param state_resource: ConnectionStateResource 实例
 func initialize(state_resource: ConnectionStateResource) -> void:
 	_connection_state = state_resource
+
+
+# 延迟初始化方法，确保节点已在场景树中
+func _deferred_setup() -> void:
+	if _initialization_state != InitializationState.INITIALIZING:
+		return
+	
+	# 检查节点是否在场景树中
+	if not is_inside_tree():
+		_initialization_state = InitializationState.ERROR
+		push_error("ConnectionManager: 节点未在场景树中，无法完成初始化")
+		return
+	
+	# 安全地创建心跳定时器
+	_setup_heartbeat_timer()
+	_initialization_state = InitializationState.READY
+
+
+# 为测试环境提供的安全创建方法
+static func create_for_testing() -> Node:
+	var manager = preload("res://managers/connection_manager.gd").new()
+	# 跳过自动初始化，由测试控制
+	manager._skip_auto_setup = true
+	manager._initialization_state = InitializationState.NOT_INITIALIZED
+	return manager
+
+
+# 手动初始化方法，用于测试环境
+func manual_initialize(state_resource: ConnectionStateResource = null) -> void:
+	if _initialization_state != InitializationState.NOT_INITIALIZED:
+		push_warning("ConnectionManager: 已经初始化过，跳过重复初始化")
+		return
+	
+	_initialization_state = InitializationState.INITIALIZING
+	
+	if state_resource:
+		_connection_state = state_resource
+	
+	# 连接信号
+	multiplayer.peer_connected.connect(_on_peer_connected)
+	multiplayer.peer_disconnected.connect(_on_peer_disconnected)
+	multiplayer.connected_to_server.connect(_on_connected_to_server)
+	multiplayer.connection_failed.connect(_on_connection_failed)
+	
+	# 如果已经在场景树中，立即设置；否则等待
+	if is_inside_tree():
+		_setup_heartbeat_timer()
+		_initialization_state = InitializationState.READY
+	else:
+		# 等待添加到场景树
+		tree_entered.connect(_on_tree_entered_for_manual_init, CONNECT_ONE_SHOT)
+
+
+# 手动初始化时的场景树进入回调
+func _on_tree_entered_for_manual_init() -> void:
+	if _initialization_state == InitializationState.INITIALIZING:
+		_setup_heartbeat_timer()
+		_initialization_state = InitializationState.READY
+
+
+# 获取当前初始化状态
+func get_initialization_state() -> InitializationState:
+	return _initialization_state
+
+
+# 检查是否已准备就绪
+func is_ready() -> bool:
+	return _initialization_state == InitializationState.READY
 
 
 # 启动 ENet 服务器（Host 端）
@@ -108,6 +198,15 @@ func disconnect_all() -> void:
 	_stop_heartbeat()
 
 
+# 节点退出场景树时的清理
+func _exit_tree() -> void:
+	disconnect_all()
+	if _heartbeat_timer:
+		_heartbeat_timer.queue_free()
+		_heartbeat_timer = null
+	_initialization_state = InitializationState.NOT_INITIALIZED
+
+
 # 当有 Peer 连接时的回调
 func _on_peer_connected(id: int) -> void:
 	if _connection_state and _connection_state.connected_peers != null:
@@ -140,6 +239,16 @@ func _on_connection_failed() -> void:
 
 # 设置心跳定时器
 func _setup_heartbeat_timer() -> void:
+	# 检查是否已经创建过定时器
+	if _heartbeat_timer != null:
+		return
+	
+	# 确保节点在场景树中
+	if not is_inside_tree():
+		push_error("ConnectionManager: 无法创建心跳定时器，节点不在场景树中")
+		_initialization_state = InitializationState.ERROR
+		return
+	
 	_heartbeat_timer = Timer.new()
 	_heartbeat_timer.wait_time = HEARTBEAT_INTERVAL
 	_heartbeat_timer.timeout.connect(_send_heartbeat)
@@ -183,3 +292,22 @@ func _receive_heartbeat() -> void:
 	# 如果是 Host，回复心跳给发送者
 	if _connection_state.is_host:
 		rpc_id(multiplayer.get_remote_sender_id(), "_receive_heartbeat")
+
+
+# 执行启动时配置检查
+func _perform_startup_config_check() -> void:
+	# 加载配置检查器
+	var StartupConfigChecker = preload("res://utils/startup_config_checker.gd")
+	
+	# 执行检查
+	var result = StartupConfigChecker.perform_startup_check()
+	
+	# 根据检查结果采取行动
+	match result:
+		StartupConfigChecker.CheckResult.CRITICAL_ERRORS:
+			push_error("ConnectionManager: 发现严重配置错误，请检查控制台输出")
+			_initialization_state = InitializationState.ERROR
+		StartupConfigChecker.CheckResult.WARNINGS_ONLY:
+			push_warning("ConnectionManager: 发现配置警告，建议修复")
+		StartupConfigChecker.CheckResult.PASSED:
+			print("ConnectionManager: 配置检查通过")

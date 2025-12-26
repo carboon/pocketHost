@@ -2,33 +2,31 @@
 # ConnectionManager 最小化测试
 # 只测试最基本的功能
 
-extends GutTest
-
-# 预加载必要的类
-const ConnectionManagerScript = preload("res://managers/connection_manager.gd")
-const ConnectionStateResource = preload("res://resources/connection_state_resource.gd")
+extends TestBase
 
 var connection_manager
 var state_resource
 
 
-func before_each():
-	# 创建状态资源
-	state_resource = ConnectionStateResource.new()
+func setup_test():
+	# 使用基类方法创建和跟踪资源
+	state_resource = create_test_state_resource()
 	
-	# 创建连接管理器
-	connection_manager = Node.new()
-	connection_manager.set_script(ConnectionManagerScript)
+	# 使用基类方法创建和跟踪连接管理器
+	connection_manager = create_test_connection_manager()
 	add_child(connection_manager)
-	connection_manager.initialize(state_resource)
+	
+	# 手动初始化
+	connection_manager.manual_initialize(state_resource)
 
 
-func after_each():
-	if connection_manager:
+func cleanup_test():
+	# 在连接管理器被自动清理前，先断开所有连接
+	if connection_manager and is_instance_valid(connection_manager):
 		connection_manager.disconnect_all()
-		connection_manager.queue_free()
-		connection_manager = null
-	state_resource = null
+	
+	# 验证测试隔离性
+	verify_test_isolation()
 
 
 # 测试：初始化后应该正确设置状态资源
@@ -37,6 +35,19 @@ func test_initialization():
 		"状态资源应该被正确设置")
 	assert_eq(connection_manager._connection_state, state_resource,
 		"状态资源引用应该正确")
+	assert_true(connection_manager.is_ready(),
+		"管理器应该处于就绪状态")
+
+
+# 测试：测试工厂方法创建的实例应该跳过自动初始化
+func test_create_for_testing():
+	var test_manager = ConnectionManagerScript.create_for_testing()
+	assert_true(test_manager._skip_auto_setup,
+		"测试实例应该跳过自动初始化")
+	assert_eq(test_manager.get_initialization_state(), 
+		test_manager.InitializationState.NOT_INITIALIZED,
+		"测试实例初始状态应该为 NOT_INITIALIZED")
+	test_manager.queue_free()
 
 
 # 测试：启动服务器应该发出 server_started 信号

@@ -18,11 +18,12 @@ func before_each():
 	# 确保 connected_peers 已初始化
 	state_resource.connected_peers = []
 	
-	# 创建连接管理器
-	connection_manager = Node.new()
-	connection_manager.set_script(ConnectionManagerScript)
+	# 使用安全的测试工厂方法创建连接管理器
+	connection_manager = ConnectionManagerScript.create_for_testing()
 	add_child(connection_manager)
-	connection_manager.initialize(state_resource)
+	
+	# 手动初始化
+	connection_manager.manual_initialize(state_resource)
 
 
 func after_each():
@@ -50,10 +51,9 @@ func test_property_heartbeat_timer_configuration():
 			connection_manager.disconnect_all()
 			connection_manager.queue_free()
 		
-		connection_manager = Node.new()
-		connection_manager.set_script(ConnectionManagerScript)
+		connection_manager = ConnectionManagerScript.create_for_testing()
 		add_child(connection_manager)
-		connection_manager.initialize(state_resource)
+		connection_manager.manual_initialize(state_resource)
 		
 		# 验证心跳定时器存在且配置正确
 		assert_not_null(connection_manager._heartbeat_timer,
@@ -75,18 +75,10 @@ func test_property_heartbeat_timer_configuration():
 func test_property_heartbeat_time_update():
 	# 运行 10 次迭代
 	for iteration in range(10):
-		# 重置状态
-		state_resource.reset()
-		connection_manager.disconnect_all()
-		
-		# 启动服务器
-		connection_manager.start_server()
-		await get_tree().process_frame
-		
 		# 记录调用前的时间
 		var time_before = Time.get_ticks_msec() / 1000.0
 		
-		# 调用 _receive_heartbeat
+		# 直接调用 _receive_heartbeat（不需要启动服务器）
 		connection_manager._receive_heartbeat()
 		
 		# 记录调用后的时间
@@ -112,12 +104,10 @@ func test_property_heartbeat_time_update():
 func test_property_peer_connection_signals():
 	# 运行 10 次迭代
 	for iteration in range(10):
-		# 重置状态资源并确保 connected_peers 已初始化
-		state_resource = ConnectionStateResource.new()
-		state_resource.connected_peers = []
-		connection_manager.initialize(state_resource)
+		# 每次迭代重置状态资源（不重新初始化管理器）
+		state_resource.connected_peers.clear()
 		
-		# 监听连接信号（在启动服务器之前）
+		# 监听连接信号
 		watch_signals(connection_manager)
 		
 		# 生成随机 Peer ID（使用 int 类型）
@@ -150,10 +140,8 @@ func test_property_peer_connection_signals():
 func test_property_disconnection_signal():
 	# 运行 10 次迭代
 	for iteration in range(10):
-		# 重置状态资源并确保 connected_peers 已初始化
-		state_resource = ConnectionStateResource.new()
-		state_resource.connected_peers = []
-		connection_manager.initialize(state_resource)
+		# 每次迭代重置状态资源（不重新初始化管理器）
+		state_resource.connected_peers.clear()
 		
 		# 监听信号
 		watch_signals(connection_manager)

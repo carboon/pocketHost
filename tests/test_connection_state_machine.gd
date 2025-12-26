@@ -2,31 +2,27 @@
 # ConnectionStateMachine 单元测试
 # 验证状态机的状态转换逻辑和操作权限检查
 
-extends GutTest
-
-# 预加载必要的类
-const ConnectionStateResource = preload("res://resources/connection_state_resource.gd")
-const StateMachineScript = preload("res://managers/connection_state_machine.gd")
+extends TestBase
 
 var state_machine
 var state_resource
 var ConnectionState  # 枚举引用
 
 
-func before_each():
-	state_resource = ConnectionStateResource.new()
-	ConnectionState = ConnectionStateResource.ConnectionState
-	state_machine = Node.new()
-	state_machine.set_script(StateMachineScript)
+func setup_test():
+	# 使用基类方法创建和跟踪资源
+	state_resource = create_test_state_resource()
+	ConnectionState = state_resource.ConnectionState
+	
+	# 使用基类方法创建和跟踪状态机
+	state_machine = create_test_state_machine()
 	add_child(state_machine)
 	state_machine.initialize(state_resource)
 
 
-func after_each():
-	if state_machine:
-		state_machine.queue_free()
-		state_machine = null
-	state_resource = null
+func cleanup_test():
+	# 验证测试隔离性
+	verify_test_isolation()
 
 
 # 测试：初始状态应该为 IDLE
